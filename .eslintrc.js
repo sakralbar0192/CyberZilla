@@ -5,12 +5,20 @@ module.exports = {
     },
     extends: [
         'plugin:vue/vue3-essential',
+        'plugin:vue/vue3-recommended',
         'eslint:recommended',
         '@vue/eslint-config-typescript',
     ],
     rules: {
         'vue/multi-word-component-names': 'off',
         'no-trailing-spaces': 'error',
+        'vue/html-indent': [
+            'error',
+            4,
+            {
+                'baseIndent': 1
+            }
+        ],
         'vue/script-indent': [
             'error',
             4,

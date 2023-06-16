@@ -1,0 +1,10 @@
+<div :class="$style.block">
+    <h1>{{ msg }}</h1>
+    <p>{{ doubleValue }}</p>
+</div>
+<router-link to="/PaymentInfo">
+    Go to UsersList
+</router-link>
+<button @click="clickHandler">
+    increment ({{ count }})
+</button>
