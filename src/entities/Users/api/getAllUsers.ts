@@ -1,13 +1,18 @@
 import { requestFromApi } from 'shared/lib/requestFromApi'
-import { EUsersMethods } from '../types'
+import { EUsersMethods, IUserItem } from '../types'
+import { IResponse } from 'shared/types'
 
-const MAX_USERS_COUNT = 100
+interface IResponseData {
+    users: IUserItem[]
+}
 
-export function getAllUsers() {
+export async function getAllUsers(): Promise<IResponse<IUserItem[]>> {
     const url = EUsersMethods.GET_ALL_USERS
-    const params = {
-        _quantity: MAX_USERS_COUNT
-    }
 
-    return requestFromApi({ url, params })
+    const response =  await requestFromApi<IResponseData>({ url })
+
+    return {
+        ...response,
+        data: response.data?.users
+    }
 }

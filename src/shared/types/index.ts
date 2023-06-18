@@ -1,7 +1,6 @@
 export type TValueOf<T> = T[keyof T]
 
 export interface IServerResponse {
-    code: number
     data: unknown
 }
 

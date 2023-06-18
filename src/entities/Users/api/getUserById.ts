@@ -1,14 +1,11 @@
 import { requestFromApi } from 'shared/lib/requestFromApi'
-import { EUsersMethods } from '../types'
+import { EUsersMethods, IUserItem } from '../types'
+import { IResponse } from 'shared/types'
 
-const ONE_USER_QUANTITY = 1
+export async function getUserById(id: number): Promise<IResponse<IUserItem>> {
+    const url = EUsersMethods.GET_USER_BY_ID + id
 
-export function getUserById(id: number) {
-    const url = EUsersMethods.GET_USER_BY_ID
-    const params = {
-        _quantity: ONE_USER_QUANTITY,
-        _seed: id
-    }
+    const response = await requestFromApi<IUserItem>({ url })
 
-    return requestFromApi({ url, params })
+    return response
 }

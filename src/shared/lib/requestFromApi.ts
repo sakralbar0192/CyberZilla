@@ -32,11 +32,10 @@ export async function requestFromApi<T>({
             params
         }
     )
-        .then((res: AxiosResponse<IServerResponse>) => {
-            const serverRespoponse = res.data
-
-            if (serverRespoponse.code === SUCCESS_RESPONSE_STATUS) {
-                response.data = serverRespoponse.data as T ?? undefined
+        .then((serverResponse: AxiosResponse<IServerResponse>) => {
+            if (serverResponse.status === SUCCESS_RESPONSE_STATUS) {
+                response.isSucceeded = true
+                response.data = serverResponse.data as T ?? undefined
             } else {
                 response.message = REQUEST_FAILED_MESSAGE
             }

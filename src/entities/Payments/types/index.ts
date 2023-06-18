@@ -8,6 +8,6 @@ export interface IPaymentItem extends IEntityItem {
 }
 
 export const EPaymentsMethods = {
-    GET_ALL_PAYMENTS: 'https://fakerapi.it/api/v1/products'
+    GET_USER_PAYMENTS: 'https://dummyjson.com/carts/user'
 } as const
 export type EPaymentsMethods = TValueOf<typeof EPaymentsMethods>

@@ -3,11 +3,17 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
     {
         path: '/',
-        component: () => import('pages/UserList.vue'),
-    },
-    {
-        path: '/PaymentInfo',
-        component: () => import('pages/PaymentInfo.vue'),
+        component: () => import('pages/MainPage.vue'),
+        children: [
+            {
+                path: '/',
+                component: () => import('pages/Users.vue'),
+            },
+            {
+                path: '/PaymentInfo/:id',
+                component: () => import('pages/PaymentInfo.vue'),
+            }
+        ]
     },
     {
         path: '/:pathMatch(.*)',
