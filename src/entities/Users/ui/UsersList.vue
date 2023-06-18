@@ -4,7 +4,10 @@
             v-for="user of props.users"
             :key="user.id"
         >
-            <UserCard :user="user" />
+            <UserCard
+                :user="user"
+                @modify-user="modifyUser"
+            />
         </li>
     </ul>
 </template>
@@ -20,6 +23,14 @@
             required: true
         }
     })
+
+    const emit = defineEmits<{
+        (e: 'modify-user', value: IUserItem): void
+    }>()
+
+    function modifyUser(user: IUserItem) {
+        emit('modify-user', user)
+    }
 </script>
 
 <style module lang="scss">

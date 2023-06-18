@@ -4,15 +4,6 @@
             v-model="dialog"
             width="auto"
         >
-            <template #activator="{ props }">
-                <v-btn
-                    color="primary"
-                    v-bind="props"
-                >
-                    Open Dialog
-                </v-btn>
-            </template>
-
             <v-card>
                 <v-card-text>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -21,7 +12,7 @@
                     <v-btn
                         color="primary"
                         block
-                        @click="dialog = false"
+                        @click="closeDialog"
                     >
                         Close Dialog
                     </v-btn>
@@ -30,3 +21,21 @@
         </v-dialog>
     </div>
 </template>
+
+<script setup lang="ts">
+    import { computed } from 'vue'
+
+    const props = withDefaults(defineProps<{modelValue: boolean}>(), {
+        modelValue: false
+    })
+
+    const emit = defineEmits<{
+        (e: 'update:modelValue', value: boolean): void
+    }>()
+
+    const dialog = computed(() => props.modelValue )
+
+    function closeDialog() {
+        emit('update:modelValue', false)
+    }
+</script>

@@ -19,7 +19,10 @@
         </v-card-item>
 
         <v-card-actions>
-            <v-btn variant="outlined">
+            <v-btn
+                variant="outlined"
+                @click="modifyUser"
+            >
                 Edit
             </v-btn>
             <v-btn variant="outlined">
@@ -27,7 +30,7 @@
             </v-btn>
             <v-btn
                 variant="outlined"
-                @click="router.push('PaymentInfo/' + props.user.id)"
+                @click="router.push('/PaymentInfo/' + props.user.id)"
             >
                 View payments
             </v-btn>
@@ -36,18 +39,24 @@
 </template>
 
 <script setup lang="ts">
-    import { PropType } from 'vue'
     import { IUserItem } from '../types'
     import { useRouter } from 'vue-router'
 
     const router = useRouter()
 
-    const props = defineProps({
-        user: {
-            type: Object as PropType<IUserItem>,
-            required: true
-        }
-    })
+    const props = withDefaults(
+        defineProps<{
+            user: IUserItem
+        }>(), {}
+    )
+
+    const emit = defineEmits<{
+        (e: 'modify-user', value: IUserItem): void
+    }>()
+
+    function modifyUser() {
+        emit('modify-user', props.user)
+    }
 </script>
 
 <style module lang="scss">

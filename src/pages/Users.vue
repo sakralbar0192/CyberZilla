@@ -9,6 +9,7 @@
             >
                 <UsersList
                     :users="usersStore.users"
+                    @modify-user="modifyUserHandler"
                 />
             </div>
 
@@ -26,14 +27,24 @@
             {{ DEFAULT_ERROR_MESSAGE }}
         </p>
     </section>
+    <ModifyUserDialog
+        v-if="modifiedUserRef"
+        v-model:visible="modifyUserModalVisible"
+        :user="modifiedUserRef"
+        @modify-user-success="modifyUserSuccessHandler"
+    />
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { useUsersStore } from 'app/store/users'
     import { onMounted } from 'vue'
     import UsersList from 'entities/Users/ui/UsersList.vue'
     import AppLoader from 'widgets/AppLoader.vue'
+    import ModifyUserDialog from 'entities/Users/ui/ModifyUserDialog.vue'
     import { DEFAULT_ERROR_MESSAGE, NOTHING_TO_DISPLAY_MESSAGE } from 'shared/const'
+    import { ref } from 'vue'
+    import { IUserItem } from 'entities/Users/types'
+    import { Ref } from 'vue'
 
     const usersStore = useUsersStore()
 
@@ -42,6 +53,20 @@
             usersStore.fetchUsers()
         }
     })
+
+    const modifyUserModalVisible = ref(false)
+    const modifiedUserRef:Ref<IUserItem | undefined> = ref()
+
+    function modifyUserHandler(modifiedUser: IUserItem) {
+        modifiedUserRef.value = modifiedUser
+        modifyUserModalVisible.value = true
+    }
+
+    function modifyUserSuccessHandler(modifiedUser: IUserItem) {
+        modifyUserModalVisible.value = false
+        modifiedUserRef.value = undefined
+        usersStore.modifyUser(modifiedUser)
+    }
 </script>
 
 <style module lang="scss">

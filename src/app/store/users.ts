@@ -18,6 +18,8 @@ interface IInitialState {
     isUserLoadedError: Ref<boolean>
     userLoadedErrorMessage: Ref<string>
     setActiveUser: (id: number) => void
+
+    modifyUser: (modifiedUser: IUserItem) => void
 }
 
 export const useUsersStore = defineStore('users', (): IInitialState => {
@@ -72,6 +74,15 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
         }
     }
 
+    function modifyUser(modifiedUser: IUserItem) {
+        if (users.value) {
+            const newUsers = [...users.value]
+            const modifiedUserIndex = newUsers.findIndex(user => user.id === modifiedUser.id)
+            newUsers[modifiedUserIndex] = modifiedUser
+            users.value = newUsers
+        }
+    }
+
     return {
         users,
         isUsersLoading,
@@ -84,6 +95,8 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
         isUserLoading,
         isUserLoadedError,
         userLoadedErrorMessage,
-        setActiveUser
+        setActiveUser,
+
+        modifyUser
     }
 })
