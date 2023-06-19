@@ -63,27 +63,45 @@
         }
     })
 
-    const modifyUserDialogVisible = ref(false)
-    const viewUserTodosDialogVisible = ref(false)
+    const modifyUserDialogVisible = ref(false) //a variable that stores the modify user dialog visibility value
+    const viewUserTodosDialogVisible = ref(false) // a variable that stores the user todos info dialog visibility value
 
-    const modifiedUserRef: Ref<IUserItem | undefined> = ref()
+    const modifiedUserRef: Ref<IUserItem | undefined> = ref() // //a variable that stores the displayed in payments info dialog payments
 
+    /**
+     * shows a modify user dialog and determines the modified user
+     *
+     * @param modifiedUser - modified user
+     */
     function openModifyUserDialog(modifiedUser: IUserItem) {
         modifiedUserRef.value = modifiedUser
         modifyUserDialogVisible.value = true
     }
 
+    /**
+     * shows a user todos dialog and determines the modified user
+     *
+     * @param modifiedUser -  - modified user
+     */
     function openViewUserTodosDialog(modifiedUser: IUserItem) {
         modifiedUserRef.value = modifiedUser
         viewUserTodosDialogVisible.value = true
     }
 
+    /**
+     *  modifies an existing user instance
+     *
+     * @param modifiedUser -modified user
+     */
     function modifyUser(modifiedUser: IUserItem | undefined = modifiedUserRef.value) {
         if (modifiedUser) {
             usersStore.modifyUser(modifiedUser)
         }
     }
 
+    /**
+     * allows child elements to access a functions by keys
+     */
     provide(openModifyUserDialogKey, openModifyUserDialog)
     provide(openViewUserTodosDialogKey, openViewUserTodosDialog)
     provide(modifyUserKey, modifyUser)

@@ -22,7 +22,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHashHistory(process.env.BASE_URL),
+    history: createWebHashHistory(process.env.BASE_URL), //Since there is no way to configure the server, Hash is used, not HistoryAPI.
     routes,
 })
 

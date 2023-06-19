@@ -22,10 +22,15 @@
         }>(), {}
     )
 
-    const openViewUserTodosDialog = inject(openPaymentInfoDialogKey)
+    const openViewUserPaymentsDialog = inject(openPaymentInfoDialogKey) // the injected function for displaying user payment info in a dialog
 
+    /**
+     * event handler for displaying information about user's payments
+     *
+     * @param payment - an object with information about the user's payments that needs to be displayed
+     */
     function viewHandler(payment: IPaymentItem) {
-        if (openViewUserTodosDialog) openViewUserTodosDialog(payment)
+        if (openViewUserPaymentsDialog) openViewUserPaymentsDialog(payment)
     }
 </script>
 

@@ -6,6 +6,9 @@ interface IResponseData {
     users: IUserItem[]
 }
 
+/**
+ * requests information about all users from the server
+ */
 export async function getAllUsers(): Promise<IResponse<IUserItem[]>> {
     const url = EUsersMethods.GET_ALL_USERS
 

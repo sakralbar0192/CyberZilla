@@ -67,8 +67,8 @@
         (e: 'update:user', value: IUserItem | undefined): void,
     }>()
 
-    const dialog = computed(() => props.visible )
-    const todos = computed(() => props.user.todos)
+    const dialog = computed(() => props.visible ) //the intermediary variable for the boolean value of dialog visibility
+    const todos = computed(() => props.user.todos) //intermediate variable for storing an array of user tasks
 
     onMounted(() => {
         if (!props.user.todos) {
@@ -76,6 +76,9 @@
         }
     })
 
+    /**
+     * hides the dialog and resets the value of the active user
+     */
     function closeDialog() {
         emit('update:visible', false)
         emit('update:user', undefined)

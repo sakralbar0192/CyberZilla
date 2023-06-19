@@ -6,6 +6,11 @@ interface IResponseData {
     todos: ITodoItem[]
 }
 
+/**
+ * requests information about user's todos from the server
+ *
+ * @param id - user id
+ */
 export async function getUserTodos(id: number): Promise<IResponse<ITodoItem[]>> {
     const url = ETodosMethods.GET_ALL_USER_TODOS + id
     await new Promise(res=> setTimeout(() => res(true), 3000))

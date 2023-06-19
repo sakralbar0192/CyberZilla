@@ -37,13 +37,16 @@
         }
     )
 
-    const dialog = computed(() => props.visible)
+    const dialog = computed(() => props.visible) //the intermediary variable for the boolean value of dialog visibility
 
     const emit = defineEmits<{
         (e: 'update:visible', value: boolean): void
         (e: 'update:payment', value: undefined): void
     }>()
 
+    /**
+     * hides the dialog and resets the value of the displayed payment
+     */
     function closeDialog() {
         emit('update:visible', false)
         emit('update:payment', undefined)

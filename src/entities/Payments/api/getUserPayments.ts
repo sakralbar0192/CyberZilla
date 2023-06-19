@@ -8,6 +8,11 @@ interface IResponseData {
     }[]
 }
 
+/**
+ * requests information about user's payments from the server
+ *
+ * @param id - user id
+ */
 export async function getUsersPayments(id: number): Promise<IResponse<IPaymentItem[]>> {
     const url = EPaymentsMethods.GET_USER_PAYMENTS + id
 

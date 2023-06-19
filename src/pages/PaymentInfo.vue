@@ -49,7 +49,7 @@
     </section>
     <PaymentInfoDialog
         v-if="displayedPayment"
-        v-model:visible="modifyUserDialogVisible"
+        v-model:visible="viewUserPaymentsDialogVisible"
         :payment="displayedPayment"
     />
 </template>
@@ -76,15 +76,20 @@
         usersStore.setActiveUser(id)
     })
 
-    const modifyUserDialogVisible = ref(false)
-    const displayedPayment = ref()
+    const viewUserPaymentsDialogVisible = ref(false) //a variable that stores the user payments dialog visibility value
+    const displayedPayment = ref() //a variable that stores the displayed in payments info dialog payments
 
+    /**
+     * shows a dialog with information about payments and determines the displayed payments
+     *
+     * @param payment displayed payments
+     */
     function openPaymentInfoDialog(payment: IPaymentItem) {
         displayedPayment.value = payment
-        modifyUserDialogVisible.value = true
+        viewUserPaymentsDialogVisible.value = true
     }
 
-    provide(openPaymentInfoDialogKey, openPaymentInfoDialog)
+    provide(openPaymentInfoDialogKey, openPaymentInfoDialog) //allows child elements to access a function by key
 </script>
 
 <style module lang="scss">

@@ -12,24 +12,52 @@ interface IInitialState {
     isUsersLoading: Ref<boolean>
     isUsersLoadedError: Ref<boolean>
     usersLoadedErrorMessage: Ref<string>
+    /**
+     * gets information about all users
+    */
     fetchUsers: () => void
 
     activeUser: Ref<IUserItem | undefined>
     isUserLoading: Ref<boolean>
     isUserLoadedError: Ref<boolean>
     userLoadedErrorMessage: Ref<string>
+    /**
+     * gets information about single user
+     *
+     * @param id - fetched user id
+    */
     fetchUser: (id: number) => void
+    /**
+     * sets the value of "activeUser" - the user whose information is currently displayed
+     *
+     * @param id - active user id
+     */
     setActiveUser: (id: number) => void
+    /**
+     * modifies an existing user instance
+     *
+     * @param modifiedUser - modified user instance
+     */
     modifyUser: (modifiedUser: IUserItem) => void
 
     isTodosLoading: Ref<boolean>
     isTodosLoadedError: Ref<boolean>
     todosLoadedErrorMessage: Ref<string>
+    /**
+     * gets information about the user's todos
+     *
+     * @param id - current user id
+     */
     fetchUserTodos: (id: number) => void
 
     isPaymentsLoading: Ref<boolean>
     isPaymentsLoadedError: Ref<boolean>
     paymentsLoadedErrorMessage: Ref<string>
+    /**
+     * receives information about the user's payments the information about which is currently displayed
+     *
+     * @param id - active user id
+     */
     fetchActiveUserPayments: (id: number) => void
 }
 
@@ -80,6 +108,11 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
         return response.data
     }
 
+    /**
+     * sets the value of the storage property "users" equal to the passed value
+     *
+     * @param newUsers - array of users
+    */
     function setUsers(newUsers: IUserItem[] | undefined) {
         users.value = newUsers
     }

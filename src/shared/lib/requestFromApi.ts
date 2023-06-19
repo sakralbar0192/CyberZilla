@@ -9,6 +9,11 @@ export interface IRequestFromApiProps {
     data?: Record<string, unknown> | unknown[] | null
 }
 
+/**
+ * request from server bu passed url and params
+ *
+ * @param param0 - standart request params
+ */
 export async function requestFromApi<T>({
     url,
     method = 'GET',

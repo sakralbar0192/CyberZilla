@@ -59,13 +59,22 @@
         }
     )
 
-    const openModifyUserDialog = props.showActions ? inject(openModifyUserDialogKey) : undefined
-    const openViewUserTodosDialog = props.showActions ? inject(openViewUserTodosDialogKey) : undefined
+    /**
+     * two variables referring to the implemented functions should be defined only if the block with buttons is displayed in the user card
+     */
+    const openModifyUserDialog = props.showActions ? inject(openModifyUserDialogKey) : undefined // the injected function for displaying modify user dialog
+    const openViewUserTodosDialog = props.showActions ? inject(openViewUserTodosDialogKey) : undefined // the injected function for displaying user todos in a dialog
 
+    /**
+     * handler for the user data editing button click event
+     */
     function editHandler() {
         if (openModifyUserDialog) openModifyUserDialog({ ...props.user })
     }
 
+    /**
+     * handler for the user todos editing button click event
+     */
     function editTodosHandler() {
         if (openViewUserTodosDialog) openViewUserTodosDialog(props.user)
     }

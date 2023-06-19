@@ -67,8 +67,8 @@
         (e: 'modify-user'): void
     }>()
 
-    const dialog = computed(() => props.visible )
-    const modifiedUser = ref(props.user)
+    const dialog = computed(() => props.visible ) //the intermediary variable for the boolean value of dialog visibility
+    const modifiedUser = ref(props.user) //the intermediary variable for the value of modified user
     const isModifyButtonDisabled = computed(
         () => Boolean(
             !modifiedUser.value.firstName ||
@@ -76,13 +76,19 @@
                 !modifiedUser.value.phone ||
                 !modifiedUser.value.email
         )
-    )
+    ) //the variable for the computed disable status modify button
 
+    /**
+     * hides the dialog and resets the value of the active user
+     */
     function closeDialog() {
         emit('update:visible', false)
         emit('update:user', undefined)
     }
 
+    /**
+     * modify passed user, emit 'modify-user' event, hides the dialog and resets the value of the active user
+     */
     function modifyUser() {
         emit('update:user', modifiedUser.value)
         emit('modify-user')

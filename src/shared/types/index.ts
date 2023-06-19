@@ -11,5 +11,5 @@ export interface IResponse<T> {
 }
 
 export interface IEntityItem {
-    id: number
+    readonly id: number
 }
