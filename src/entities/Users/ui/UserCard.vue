@@ -18,7 +18,7 @@
             </div>
         </v-card-item>
 
-        <v-card-actions>
+        <v-card-actions v-if="showActions">
             <v-btn
                 variant="outlined"
                 @click="editHandler"
@@ -32,6 +32,7 @@
                 View todos
             </v-btn>
             <v-btn
+                v-if="!props.user.payments || props.user.payments?.length"
                 variant="outlined"
                 @click="router.push('/PaymentInfo/' + props.user.id)"
             >
@@ -52,11 +53,14 @@
     const props = withDefaults(
         defineProps<{
             user: IUserItem
-        }>(), {}
+            showActions?: boolean
+        }>(), {
+            showActions: false
+        }
     )
 
-    const openModifyUserDialog = inject(openModifyUserDialogKey)
-    const openViewUserTodosDialog = inject(openViewUserTodosDialogKey)
+    const openModifyUserDialog = props.showActions ? inject(openModifyUserDialogKey) : undefined
+    const openViewUserTodosDialog = props.showActions ? inject(openViewUserTodosDialogKey) : undefined
 
     function editHandler() {
         if (openModifyUserDialog) openModifyUserDialog({ ...props.user })

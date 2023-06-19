@@ -4,33 +4,23 @@
             v-for="user of props.users"
             :key="user.id"
         >
-            <UserListItem
+            <UserCard
                 :user="user"
-                @modify-user="modifyUser"
+                :show-actions="true"
             />
         </li>
     </ul>
 </template>
 
 <script setup lang="ts">
-    import { PropType } from 'vue'
     import { IUserItem } from '../types'
-    import UserListItem from 'entities/Users/ui/UserListItem.vue'
+    import UserCard from 'entities/Users/ui/UserCard.vue'
 
-    const props = defineProps({
-        users: {
-            type: Object as PropType<IUserItem[]>,
-            required: true
-        }
-    })
-
-    const emit = defineEmits<{
-        (e: 'modify-user', value: IUserItem): void
-    }>()
-
-    function modifyUser(user: IUserItem) {
-        emit('modify-user', user)
-    }
+    const props = withDefaults(
+        defineProps<{
+            users: IUserItem[]
+        }>(), {}
+    )
 </script>
 
 <style module lang="scss">

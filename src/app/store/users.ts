@@ -1,3 +1,4 @@
+import { getUsersPayments } from 'entities/Payments/api/getUserPayments'
 import { getUserTodos } from 'entities/Todos/api/getUserTodos'
 import { getAllUsers } from 'entities/Users/api/getAllUsers'
 import { getUserById } from 'entities/Users/api/getUserById'
@@ -12,20 +13,24 @@ interface IInitialState {
     isUsersLoadedError: Ref<boolean>
     usersLoadedErrorMessage: Ref<string>
     fetchUsers: () => void
-    fetchUser: (id: number) => void
 
     activeUser: Ref<IUserItem | undefined>
     isUserLoading: Ref<boolean>
     isUserLoadedError: Ref<boolean>
     userLoadedErrorMessage: Ref<string>
+    fetchUser: (id: number) => void
     setActiveUser: (id: number) => void
-
     modifyUser: (modifiedUser: IUserItem) => void
 
     isTodosLoading: Ref<boolean>
     isTodosLoadedError: Ref<boolean>
     todosLoadedErrorMessage: Ref<string>
     fetchUserTodos: (id: number) => void
+
+    isPaymentsLoading: Ref<boolean>
+    isPaymentsLoadedError: Ref<boolean>
+    paymentsLoadedErrorMessage: Ref<string>
+    fetchActiveUserPayments: (id: number) => void
 }
 
 export const useUsersStore = defineStore('users', (): IInitialState => {
@@ -42,6 +47,10 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
     const isTodosLoading = ref(false)
     const isTodosLoadedError = ref(false)
     const todosLoadedErrorMessage = ref('')
+
+    const isPaymentsLoading = ref(false)
+    const isPaymentsLoadedError = ref(false)
+    const paymentsLoadedErrorMessage = ref('')
 
     async function fetchUsers() {
         isUsersLoading.value = true
@@ -75,12 +84,30 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
         users.value = newUsers
     }
 
+    async function fetchActiveUserPayments(id: number) {
+        isPaymentsLoading.value = true
+
+        const response = await getUsersPayments(id)
+
+        if (!response.isSucceeded) {
+            isPaymentsLoadedError.value = true
+            paymentsLoadedErrorMessage.value = response.message || REQUEST_FAILED_MESSAGE
+        }
+
+        isPaymentsLoading.value = false
+        return response.data
+    }
+
     async function setActiveUser(id: number) {
         if (users.value) {
             const newActiveUser = users.value.find(user => user.id === id)
             activeUser.value = newActiveUser
         } else {
             activeUser.value = await fetchUser(id)
+        }
+        if (activeUser.value && !activeUser.value.payments) {
+            activeUser.value.payments = await fetchActiveUserPayments(id)
+            modifyUser(activeUser.value)
         }
     }
 
@@ -134,5 +161,10 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
         isTodosLoadedError,
         todosLoadedErrorMessage,
         fetchUserTodos,
+
+        isPaymentsLoading,
+        isPaymentsLoadedError,
+        paymentsLoadedErrorMessage,
+        fetchActiveUserPayments
     }
 })

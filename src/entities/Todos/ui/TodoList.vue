@@ -1,7 +1,6 @@
 <template>
     <v-list
-        lines="three"
-        select-strategy="classic"
+        lines="two"
     >
         <v-list-item
             v-for="todo in props.todos"
@@ -29,21 +28,3 @@
         }>(), {}
     )
 </script>
-
-<style module lang="scss">
-    .list {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: stretch;
-        justify-content: center;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-
-        li {
-            flex-grow: 1;
-            margin: 5px;
-        }
-    }
-</style>
-

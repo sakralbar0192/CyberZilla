@@ -1,3 +1,4 @@
+import { IPaymentItem } from 'entities/Payments/types'
 import { ITodoItem } from 'entities/Todos/types'
 import { IEntityItem, TValueOf } from 'shared/types'
 
@@ -7,6 +8,7 @@ export interface IUserItem extends IEntityItem {
     email: string
     phone: string
     todos?: ITodoItem[]
+    payments?: IPaymentItem[]
 }
 
 export const EUsersMethods = {

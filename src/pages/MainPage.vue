@@ -1,6 +1,8 @@
 <template>
-    <h1>{{ store.title }}</h1>
-    <router-view />
+    <div :class="$style.appWrapper">
+        <h1>{{ store.title }}</h1>
+        <router-view />
+    </div>
 </template>
 
 <script setup>
@@ -10,5 +12,8 @@
 </script>
 
 <style module lang="scss">
+    .appWrapper {
+        padding: 10px;
+    }
 </style>
 
