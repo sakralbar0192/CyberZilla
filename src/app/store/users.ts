@@ -1,3 +1,4 @@
+import { getUserTodos } from 'entities/Todos/api/getUserTodos'
 import { getAllUsers } from 'entities/Users/api/getAllUsers'
 import { getUserById } from 'entities/Users/api/getUserById'
 import { IUserItem } from 'entities/Users/types'
@@ -20,6 +21,11 @@ interface IInitialState {
     setActiveUser: (id: number) => void
 
     modifyUser: (modifiedUser: IUserItem) => void
+
+    isTodosLoading: Ref<boolean>
+    isTodosLoadedError: Ref<boolean>
+    todosLoadedErrorMessage: Ref<string>
+    fetchUserTodos: (id: number) => void
 }
 
 export const useUsersStore = defineStore('users', (): IInitialState => {
@@ -32,6 +38,10 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
     const isUserLoading = ref(false)
     const isUserLoadedError = ref(false)
     const userLoadedErrorMessage = ref('')
+
+    const isTodosLoading = ref(false)
+    const isTodosLoadedError = ref(false)
+    const todosLoadedErrorMessage = ref('')
 
     async function fetchUsers() {
         isUsersLoading.value = true
@@ -83,6 +93,27 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
         }
     }
 
+    async function fetchUserTodos(id: number) {
+        isTodosLoading.value = true
+        const response = await getUserTodos(id)
+
+        if (!response.isSucceeded) {
+            isTodosLoadedError.value = true
+            todosLoadedErrorMessage.value = response.message || REQUEST_FAILED_MESSAGE
+        }
+
+        if (users.value) {
+            const modifiedUser = users.value.find(user => user.id === id)
+
+            if (modifiedUser && users.value) {
+                modifiedUser.todos = response.data
+                modifyUser({ ...modifiedUser })
+            }
+        }
+
+        isTodosLoading.value = false
+    }
+
     return {
         users,
         isUsersLoading,
@@ -97,6 +128,11 @@ export const useUsersStore = defineStore('users', (): IInitialState => {
         userLoadedErrorMessage,
         setActiveUser,
 
-        modifyUser
+        modifyUser,
+
+        isTodosLoading,
+        isTodosLoadedError,
+        todosLoadedErrorMessage,
+        fetchUserTodos,
     }
 })

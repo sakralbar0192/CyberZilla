@@ -21,11 +21,14 @@
         <v-card-actions>
             <v-btn
                 variant="outlined"
-                @click="modifyUser"
+                @click="editHandler"
             >
                 Edit
             </v-btn>
-            <v-btn variant="outlined">
+            <v-btn
+                variant="outlined"
+                @click="editTodosHandler"
+            >
                 View todos
             </v-btn>
             <v-btn
@@ -41,6 +44,8 @@
 <script setup lang="ts">
     import { IUserItem } from '../types'
     import { useRouter } from 'vue-router'
+    import { inject } from 'vue'
+    import { openModifyUserDialogKey, openViewUserTodosDialogKey } from 'pages/injectedKeys/Users'
 
     const router = useRouter()
 
@@ -50,12 +55,15 @@
         }>(), {}
     )
 
-    const emit = defineEmits<{
-        (e: 'modify-user', value: IUserItem): void
-    }>()
+    const openModifyUserDialog = inject(openModifyUserDialogKey)
+    const openViewUserTodosDialog = inject(openViewUserTodosDialogKey)
 
-    function modifyUser() {
-        emit('modify-user', props.user)
+    function editHandler() {
+        if (openModifyUserDialog) openModifyUserDialog({ ...props.user })
+    }
+
+    function editTodosHandler() {
+        if (openViewUserTodosDialog) openViewUserTodosDialog(props.user)
     }
 </script>
 

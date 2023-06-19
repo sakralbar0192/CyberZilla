@@ -1,3 +1,4 @@
+import { ITodoItem } from 'entities/Todos/types'
 import { IEntityItem, TValueOf } from 'shared/types'
 
 export interface IUserItem extends IEntityItem {
@@ -5,6 +6,7 @@ export interface IUserItem extends IEntityItem {
     lastName: string
     email: string
     phone: string
+    todos?: ITodoItem[]
 }
 
 export const EUsersMethods = {

@@ -9,7 +9,7 @@
             >
                 <UsersList
                     :users="usersStore.users"
-                    @modify-user="modifyUserHandler"
+                    @modify-user="openModifyUserDialog"
                 />
             </div>
 
@@ -29,9 +29,15 @@
     </section>
     <ModifyUserDialog
         v-if="modifiedUserRef"
-        v-model:visible="modifyUserModalVisible"
-        :user="modifiedUserRef"
-        @modify-user-success="modifyUserSuccessHandler"
+        ref="modifyUserDialog"
+        v-model:visible="modifyUserDialogVisible"
+        v-model:user="modifiedUserRef"
+        @modify-user="modifyUser"
+    />
+    <ViewUserTodosDialog
+        v-if="modifiedUserRef"
+        v-model:visible="viewUserTodosDialogVisible"
+        v-model:user="modifiedUserRef"
     />
 </template>
 
@@ -41,10 +47,13 @@
     import UsersList from 'entities/Users/ui/UsersList.vue'
     import AppLoader from 'widgets/AppLoader.vue'
     import ModifyUserDialog from 'entities/Users/ui/ModifyUserDialog.vue'
+    import ViewUserTodosDialog from 'entities/Todos/ui/ViewUserTodosDialog.vue'
     import { DEFAULT_ERROR_MESSAGE, NOTHING_TO_DISPLAY_MESSAGE } from 'shared/const'
     import { ref } from 'vue'
     import { IUserItem } from 'entities/Users/types'
     import { Ref } from 'vue'
+    import { provide } from 'vue'
+    import { openModifyUserDialogKey, openViewUserTodosDialogKey, modifyUserKey } from './injectedKeys/Users'
 
     const usersStore = useUsersStore()
 
@@ -54,19 +63,30 @@
         }
     })
 
-    const modifyUserModalVisible = ref(false)
-    const modifiedUserRef:Ref<IUserItem | undefined> = ref()
+    const modifyUserDialogVisible = ref(false)
+    const viewUserTodosDialogVisible = ref(false)
 
-    function modifyUserHandler(modifiedUser: IUserItem) {
+    const modifiedUserRef: Ref<IUserItem | undefined> = ref()
+
+    function openModifyUserDialog(modifiedUser: IUserItem) {
         modifiedUserRef.value = modifiedUser
-        modifyUserModalVisible.value = true
+        modifyUserDialogVisible.value = true
     }
 
-    function modifyUserSuccessHandler(modifiedUser: IUserItem) {
-        modifyUserModalVisible.value = false
-        modifiedUserRef.value = undefined
-        usersStore.modifyUser(modifiedUser)
+    function openViewUserTodosDialog(modifiedUser: IUserItem) {
+        modifiedUserRef.value = modifiedUser
+        viewUserTodosDialogVisible.value = true
     }
+
+    function modifyUser(modifiedUser: IUserItem | undefined = modifiedUserRef.value) {
+        if (modifiedUser) {
+            usersStore.modifyUser(modifiedUser)
+        }
+    }
+
+    provide(openModifyUserDialogKey, openModifyUserDialog)
+    provide(openViewUserTodosDialogKey, openViewUserTodosDialog)
+    provide(modifyUserKey, modifyUser)
 </script>
 
 <style module lang="scss">

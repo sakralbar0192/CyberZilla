@@ -4,7 +4,7 @@
             v-for="user of props.users"
             :key="user.id"
         >
-            <UserCard
+            <UserListItem
                 :user="user"
                 @modify-user="modifyUser"
             />
@@ -15,7 +15,7 @@
 <script setup lang="ts">
     import { PropType } from 'vue'
     import { IUserItem } from '../types'
-    import UserCard from 'entities/Users/ui/UserCard.vue'
+    import UserListItem from 'entities/Users/ui/UserListItem.vue'
 
     const props = defineProps({
         users: {
